@@ -3,6 +3,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
+
+
+
+//{
+//    "DomainName": "Product",
+//    "Properties": "Id:int, Name:string, Price:decimal"
+//}
+
+
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -22,13 +31,6 @@ namespace API.Controllers
 
             return Ok("Code generation completed.");
         }
-        private void GenerateDomain(string domainName)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("namespace CodeGeneration.Domains;\r\npublic class Product\r\n{\r\n    public int Id { get; set; }\r\n    public string Name { get; set; }\r\n    public decimal Price { get; set; }\r\n}");
-
-            WriteToFile(Path.Combine("Domains", domainName + ".cs"), sb.ToString());
-        }
         static (string Name, string Type)[] ParseProperties(string input)
         {
             var properties = input.Split(',');
@@ -41,6 +43,12 @@ namespace API.Controllers
             }
 
             return parsedProperties;
+        }
+        private void GenerateDomain(string domainName)
+        {
+            var sb = "namespace CodeGeneration.Domains;\r\npublic class Product\r\n{\r\n    public int Id { get; set; }\r\n    public string Name { get; set; }\r\n    public decimal Price { get; set; }\r\n}";
+
+            WriteToFile(Path.Combine("Domains", domainName + ".cs"), sb.ToString());
         }
         static void GenerateRepository(string domainName)
         {
